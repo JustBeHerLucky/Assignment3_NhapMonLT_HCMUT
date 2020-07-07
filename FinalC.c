@@ -8,6 +8,8 @@
 
 #include <conio.h>
 
+#include <stdlib.h>
+
 int isInt(char a[31]) {
   int i = 0;
   for (i = 0; i < strlen(a); i++) {
@@ -66,6 +68,7 @@ int isValidArr(char arr[][31], int n, int choice) {
 
 int getChoice() {
   int choice = 0;
+  printf("Choose type!\n");
   printf("1.Int\n2.Dou\n3.Char\n");
   printf("Enter the number of type:");
   do {
@@ -202,12 +205,12 @@ void CheckEqual(char arr1[][31], int n, char arr2[][31], int m) {
   else printf("It is not equal to the first array\n");
 }
 
-int subset(char arr1[][31], int n, char arr2[][31], int m) {
+int subset(char arr2[][31], int m, char arr1[][31], int n) {
   int i, j, check = 0;
-  for (i = 0; i < n; i++) {
+  for (j = 0; j < m; j++) {
     check = 0;
-    for (j = 0; j < m; j++) {
-      if (same(arr1[i], arr2[j])) check = 1;
+    for (i = 0; i < n; i++) {
+      if (same(arr1[j], arr2[i])) check = 1;
     }
     if (check == 0) return 0;
   }
@@ -233,7 +236,7 @@ int lengthOfIntersectionArr(char arr1[][31], int n, char arr2[][31], int m) {
   int count = 0;
   int i = 0;
   for (i = 0; i < n; i++) {
-    if (ExistN(arr1, n, arr2[i])) {
+    if (ExistN(arr2, m, arr1[i])) {
       count++;
     }
   }
@@ -263,7 +266,7 @@ void Intersection(char arr1[][31], int n, char arr2[][31], int m, char newArr[][
   int count = 0;
   int i = 0;
   for (i = 0; i < n; i++) {
-    if (ExistN(arr2, m, arr2[i])) {
+    if (ExistN(arr2, m, arr1[i])) {
       copyElement(arr1[i], newArr[count]);
       count++;
     }
@@ -311,72 +314,258 @@ int ExistInArray(char arr[][31], int n, int j) {
 }
 
 void execute() {
-  int choice = getChoice();
-  int n = 0;
-  printf("Enter the number of value:");
-  scanf("%d", & n);
-  char arr[n][31];
-  if (InputArr(arr, n, choice)) {
-
-    printf("=====All the members of array in ascending order=====\n");
-    selectionSort(arr, n, choice);
-    printArr(arr, n);
-
-    printf("=====All the members of array in descending order=====\n");
-    unSelectionSort(arr, n, choice);
-    printArr(arr, n);
-
-    printf("=====Check if something is a member of array=====\n");
-    char something[31];
-    printf("Enter the number:");
-    scanf("%s", & something);
-    if (ExistN(arr, n, something)) printf("It is a member of array\n");
-    else printf("It is not a member of array\n");
-
-    printf("=====Enter another array and check if it is equal to the first array =====\n");
-    int choice2 = getChoice();
-    int m = 0;
-    printf("Enter the number of value of second array:");
-    scanf("%d", & m);
-    char arr1[m][31];
-    if (InputArr(arr1, m, choice2)) CheckEqual(arr, n, arr1, m);
-
-    printf("---Check if the first is a true subset of the secound---\n");
-    CheckSubset(arr, n, arr1, m);
-
-    printf("---Find union of first and second array\n");
-    int newLen = lengthOfUnionArr(arr, n, arr1, m);
-    char newArr[newLen][31];
-    Union(arr, n, arr1, m, newArr);
-    printArr(newArr, newLen);
-
-    printf("---Find intersection of first and second array\n");
-    int newLen1 = lengthOfIntersectionArr(arr, n, arr1, m);
-    char newArr1[newLen1][31];
-    Intersection(arr, n, arr1, m, newArr1);
-    printArr(newArr1, newLen1);
-
-    printf("---Find different of first and second array\n");
-    int newLen2 = lengthOfDiffArr(arr, n, arr1, m);
-    char newArr2[newLen2][31];
-    Different(arr, n, arr1, m, newArr2);
-    printArr(newArr2, newLen2);
-
-    printf("---Enter number n to find the greatest subset of the first array---\n");
-    int k = 0;
-    do {
-      printf("Number n: ");
-      scanf("%d", & k);
-      if (k > n) {
-        printf("Number n must be less than the number of element of the first array! ");
+  do {
+    int choose = menu();
+    switch (choose) {
+    case 1:
+      {
+        printf("=================================================================================\n");
+        int choice = getChoice();
+        int n = 0;
+        printf("Enter the number of value:");
+        scanf("%d", & n);
+        char arr[n][31];
+        int run = InputArr(arr, n, choice);
+        printf("=================================================================================\n");
+        break;
       }
-    } while (k > n);
-    char newArr3[k][31];
-    selectionSort(arr, n, choice);
-    greatestSubArray(arr, n, newArr3, k);
-    printf("The greatest subset of the first array:\n");
-    printArr(newArr3, k);
-  }
+    case 2:
+      {
+        printf("=================================================================================\n");
+        int choice = getChoice();
+        int n = 0;
+        printf("Enter the number of value:");
+        scanf("%d", & n);
+        char arr[n][31];
+        if (InputArr(arr, n, choice)) {
+
+          printf("=====All the members of array in ascending order=====\n");
+          selectionSort(arr, n, choice);
+          printArr(arr, n);
+        }
+        printf("=================================================================================\n");
+        break;
+      }
+    case 3:
+      {
+        printf("=================================================================================\n");
+        int choice = getChoice();
+        int n = 0;
+        printf("Enter the number of value:");
+        scanf("%d", & n);
+        char arr[n][31];
+        if (InputArr(arr, n, choice)) {
+
+          printf("=====All the members of array in descending order=====\n");
+          unSelectionSort(arr, n, choice);
+          printArr(arr, n);
+        }
+        printf("=================================================================================\n");
+        break;
+      }
+
+    case 4:
+      {
+        printf("=================================================================================\n");
+        int choice = getChoice();
+        int n = 0;
+        printf("Enter the number of value:");
+        scanf("%d", & n);
+        char arr[n][31];
+        if (InputArr(arr, n, choice)) {
+          printf("=====Check if something is a member of array=====\n");
+          char something[31];
+          printf("Enter the number:");
+          scanf("%s", & something);
+          if (ExistN(arr, n, something)) printf("It is a member of array\n");
+          else printf("It is not a member of array\n");
+        }
+        printf("=================================================================================\n");
+        break;
+      }
+    case 5:
+      {
+        printf("=================================================================================\n");
+        int choice = getChoice();
+        int n = 0;
+        printf("Enter the number of value:");
+        scanf("%d", & n);
+        char arr[n][31];
+        if (InputArr(arr, n, choice)) {
+          printf("=====Enter another array and check if it is equal to the first array =====\n");
+          int choice2 = getChoice();
+          int m = 0;
+          printf("Enter the number of value of second array:");
+          scanf("%d", & m);
+          char arr1[m][31];
+          if (InputArr(arr1, m, choice2)) CheckEqual(arr, n, arr1, m);
+        }
+        printf("=================================================================================\n");
+        break;
+      }
+
+    case 6:
+      {
+        printf("=================================================================================\n");
+        int choice = getChoice();
+        int n = 0;
+        printf("Enter the number of value:");
+        scanf("%d", & n);
+        char arr[n][31];
+        if (InputArr(arr, n, choice)) {
+          printf("---Check if the first is a true subset of the secound---\n");
+          int choice2 = getChoice();
+          int m = 0;
+          printf("Enter the number of value of second array:");
+          scanf("%d", & m);
+          char arr1[m][31];
+          if (InputArr(arr1, m, choice2)) CheckSubset(arr, n, arr1, m);;
+        }
+        printf("=================================================================================\n");
+        break;
+      }
+
+    case 7:
+      {
+        printf("=================================================================================\n");
+        int choice = getChoice();
+        int n = 0;
+        printf("Enter the number of value:");
+        scanf("%d", & n);
+        char arr[n][31];
+        if (InputArr(arr, n, choice)) {
+          printf("---Find union of first and second array\n");
+          int choice2 = getChoice();
+          int m = 0;
+          printf("Enter the number of value of second array:");
+          scanf("%d", & m);
+          char arr1[m][31];
+          if (InputArr(arr1, m, choice2)) {
+            int newLen = lengthOfUnionArr(arr, n, arr1, m);
+            char newArr[newLen][31];
+            Union(arr, n, arr1, m, newArr);
+            printArr(newArr, newLen);
+          }
+        }
+        printf("=================================================================================\n");
+        break;
+      }
+
+    case 8:
+      {
+        printf("=================================================================================\n");
+        int choice = getChoice();
+        int n = 0;
+        printf("Enter the number of value:");
+        scanf("%d", & n);
+        char arr[n][31];
+        if (InputArr(arr, n, choice)) {
+          printf("---Find intersection of first and second array\n");
+          int choice2 = getChoice();
+          int m = 0;
+          printf("Enter the number of value of second array:");
+          scanf("%d", & m);
+          char arr1[m][31];
+          if (InputArr(arr1, m, choice2)) {
+            int newLen1 = lengthOfIntersectionArr(arr, n, arr1, m);
+            char newArr1[newLen1][31];
+            Intersection(arr, n, arr1, m, newArr1);
+            printArr(newArr1, newLen1);
+          }
+        }
+        printf("=================================================================================\n");
+        break;
+      }
+
+    case 9:
+      {
+        printf("=================================================================================\n");
+        int choice = getChoice();
+        int n = 0;
+        printf("Enter the number of value:");
+        scanf("%d", & n);
+        char arr[n][31];
+        if (InputArr(arr, n, choice)) {
+          printf("---Find different of first and second array\n");
+          int choice2 = getChoice();
+          int m = 0;
+          printf("Enter the number of value of second array:");
+          scanf("%d", & m);
+          char arr1[m][31];
+          if (InputArr(arr1, m, choice2)) {
+            int newLen2 = lengthOfDiffArr(arr, n, arr1, m);
+            if (newLen2) {
+              char newArr2[newLen2][31];
+              Different(arr, n, arr1, m, newArr2);
+              printArr(newArr2, newLen2);
+            } else {
+              printf("The first array is equal to the second array!\n");
+            }
+          }
+        }
+        printf("=================================================================================\n");
+        break;
+      }
+
+    case 10:
+      {
+        printf("=================================================================================\n");
+        int choice = getChoice();
+        int n = 0;
+        printf("Enter the number of value:");
+        scanf("%d", & n);
+        char arr[n][31];
+        if (InputArr(arr, n, choice)) {
+          printf("---Enter number n to find the greatest subset of the first array---\n");
+          int k = 0;
+          do {
+            printf("Number n: ");
+            scanf("%d", & k);
+            if (k > n) {
+              printf("Number n must be less than the number of element of the first array! ");
+            }
+          } while (k > n);
+          char newArr3[k][31];
+          selectionSort(arr, n, choice);
+          greatestSubArray(arr, n, newArr3, k);
+          printf("The greatest subset of the first array:\n");
+          printArr(newArr3, k);
+        }
+        printf("=================================================================================\n");
+        break;
+      }
+    case 11:
+      {
+        exit(0);
+        break;
+      }
+    default:
+      {
+        printf("Invalid choose! Enter again!\n");
+        execute();
+        break;
+      }
+    }
+
+  } while (1);
+}
+
+int menu() {
+  printf("==========1. Given an array of numeric values, check if it is a valid set.\n");
+  printf("==========2. Given a valid set S of numeric values, print all the members of S in ascending order.\n");
+  printf("==========3. Given a valid set S of numeric values, print all the members of S in descending order.\n");
+  printf("==========4. Given a valid set S of numeric values and a number n, check if n is a member of S.\n");
+  printf("==========5. Given two valid sets S1 and S2, check if S1 is equal to S2.\n");
+  printf("==========6. Given two valid sets S1 and S2, check if S1 is a true subset of S2.\n");
+  printf("==========7. Given two valid sets S1 and S2, find an union of S1 and S2.\n");
+  printf("==========8. Given two valid sets S1 and S2, find an intersection of S1 and S2.\n");
+  printf("==========9. Given two valid sets S1 and S2, find a difference of S1 from S2.\n");
+  printf("==========10. Given a valid set S1 of numeric values and a number n, find a set S2 including all n members of S1. If more than one set S2 can be generated from S1, find the maximum subset S2, which is the one that has the greatest total sum of n members.\n");
+  printf("==========11. Exit.\n");
+  int choose;
+  printf("Your choose: ");
+  scanf("%d", & choose);
+  return choose;
 }
 
 int main() {
